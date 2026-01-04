@@ -68,3 +68,57 @@ Hiển thị:
 ### 3.4 Hỗ trợ Giải trình Xuất toán BHYT
 
 - Sinh **khung giải trình mẫu**
+- Nội dung bao gồm:
+  - Lý do lâm sàng
+  - Căn cứ hướng dẫn / thực tế điều trị
+  - Giải thích trường hợp ICD/thuốc/CLS không khớp máy
+- Cho phép copy ra Word để chỉnh sửa
+
+---
+
+## 4. Quản lý & Cập nhật dữ liệu (KHÔNG sửa code)
+
+### 4.1 Dữ liệu quản lý
+- Thuốc
+- ICD
+- Cận lâm sàng
+- Điều kiện thanh toán BHYT
+
+### 4.2 Cách cập nhật
+- Thêm / sửa trực tiếp qua giao diện web
+- Import dữ liệu bằng **Excel**
+- ❌ Không cần chỉnh sửa code khi thêm thuốc/CLS mới
+
+---
+
+## 5. Yêu cầu kỹ thuật
+
+- Web chạy độc lập (local / server nội bộ)
+- Truy cập qua trình duyệt
+- Không kết nối CSDL bệnh viện
+- Không tự động kê đơn
+- Không ghi nhận thông tin bệnh nhân
+
+---
+
+## 6. Giao diện
+
+- Đơn giản
+- Tra cứu nhanh
+- Gõ là ra kết quả
+- Ưu tiên tốc độ và tính thực tế, không cần giao diện phức tạp
+
+---
+
+## 7. Pháp lý & Trách nhiệm
+
+Ứng dụng chỉ mang tính **hỗ trợ tham khảo**.  
+Quyết định chẩn đoán và điều trị thuộc về bác sĩ điều trị.
+
+---
+
+## 8. Định hướng mở rộng (không bắt buộc)
+
+- Chia sẻ quyền truy cập cho đồng nghiệp
+- Chuẩn hóa dữ liệu theo khoa/phòng
+- Bổ sung ghi chú theo thực tế quyết toán từng bệnh viện
