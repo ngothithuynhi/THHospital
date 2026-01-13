@@ -1,21 +1,21 @@
 <template>
-    <div class="wrapper">
-      <div class="header-wrapper">
-        <header>
-          <TopCork></TopCork>
-        </header>
+  <div class="wrapper">
+    <div class="header-wrapper">
+      <header>
+        <TopCork></TopCork>
+      </header>
 
-        <MenuCork></MenuCork>
-      </div>
-      <div class="page-wrapper">
-        <div class="page-content">
-          <div class="row">
-            <router-view></router-view>
-          </div>
+      <MenuCork></MenuCork>
+    </div>
+    <div class="page-wrapper">
+      <div class="page-content">
+        <div class="row">
+          <router-view></router-view>
         </div>
       </div>
-      <BotCork></BotCork>
     </div>
+    <BotCork></BotCork>
+  </div>
 </template>
 <script>
 import "../../assets/js/jquery.min.js";
@@ -23,11 +23,15 @@ import "../../assets/plugins/simplebar/js/simplebar.min.js";
 import "../../assets/plugins/metismenu/js/metisMenu.min.js";
 import "../../assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js";
 import "../../assets/js/index.js";
+import TopCork from "../components/TopCork.vue";
+import BotCork from "../components/BotCork.vue";
+import MenuCork from "../components/MenuCork.vue";
+
 export default {
-    name: '#app',
-    components:{
-        TopCork, BotCork, MenuCork
-    }
+  name: '#app',
+  components: {
+    TopCork, BotCork, MenuCork
+  }
 }
 </script>
 <style>
@@ -41,5 +45,4 @@ export default {
 @import "../../assets/css/semi-dark.css";
 @import "../../assets/css/header-colors.css";
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap");
-@import "../../assets/images/favicon-32x32.png";    
 </style>
