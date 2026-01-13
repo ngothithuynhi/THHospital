@@ -9,7 +9,7 @@ class IcdSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('icd')->insert([
+        DB::table('icds')->insert([
             [
                 'ma_icd' => 'I10',
                 'ten_icd' => 'Tăng huyết áp nguyên phát',

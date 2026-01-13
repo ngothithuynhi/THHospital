@@ -10,7 +10,7 @@ class NguoiDungSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('nguoi_dung')->insert([
+        DB::table('nguoi_dungs')->insert([
             [
                 'ho_ten'        => 'Đường Đỗ Hồng Minh',
                 'email'         => 'hongminh070899@gmail.com',
