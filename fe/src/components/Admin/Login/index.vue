@@ -20,19 +20,21 @@
 
                     <form @submit.prevent="handleLogin" class="login-form">
                         <div class="input-group">
-                            <input type="email" v-model="email" required placeholder=" " id="email">
+                            <input type="email" v-model="email" placeholder=" " id="email" @input="errors.email = ''">
                             <label for="email">Email</label>
                             <span class="highlight"></span>
+                            <span v-if="errors.email" class="error-message">{{ errors.email }}</span>
                         </div>
 
                         <div class="input-group">
-                            <input :type="showPassword ? 'text' : 'password'" v-model="password" required
-                                placeholder=" " id="password">
+                            <input :type="showPassword ? 'text' : 'password'" v-model="password" placeholder=" "
+                                id="password" @input="errors.password = ''">
                             <label for="password">Mật khẩu</label>
                             <span class="eye-icon" @click="showPassword = !showPassword">
                                 {{ showPassword ? 'Ẩn' : 'Hiển thị' }}
                             </span>
                             <span class="highlight"></span>
+                            <span v-if="errors.password" class="error-message">{{ errors.password }}</span>
                         </div>
 
                         <div class="actions">
@@ -41,13 +43,16 @@
                                 <span class="checkmark"></span>
                                 <span class="label-text">Luôn xác nhận là tôi</span>
                             </label>
-                            <a href="#" class="forgot-link text-end">Quên mật khẩu?</a>
+                            <router-link to="/admin/forgot" class="forgot-link text-end">Quên mật khẩu?</router-link>
                         </div>
 
                         <button type="submit" :class="{ 'loading': isLoading }" :disabled="isLoading">
                             <span class="btn-text">Đăng nhập</span>
                             <div class="loader"></div>
                         </button>
+                        <div class="text-center mt-3">
+                            Bạn chưa có tài khoản? <router-link to="/admin/register">Đăng ký</router-link>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -56,15 +61,39 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 
 const email = ref('');
 const password = ref('');
 const showPassword = ref(false);
 const remember = ref(false);
 const isLoading = ref(false);
+const errors = reactive({
+    email: '',
+    password: ''
+});
 
 const handleLogin = async () => {
+    // Reset errors
+    errors.email = '';
+    errors.password = '';
+    let hasError = false;
+
+    if (!email.value) {
+        errors.email = 'Vui lòng nhập địa chỉ email!';
+        hasError = true;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+        errors.email = 'Vui lòng nhập đúng địa chỉ email!';
+        hasError = true;
+    }
+
+    if (!password.value) {
+        errors.password = 'Vui lòng nhập mật khẩu!';
+        hasError = true;
+    }
+
+    if (hasError) return;
+
     isLoading.value = true;
     setTimeout(() => {
         isLoading.value = false;
@@ -74,13 +103,23 @@ const handleLogin = async () => {
 </script>
 
 <style scoped>
+/* ... (existing imports and styles) ... */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 * {
     box-sizing: border-box;
 }
 
+.error-message {
+    color: #ff3333;
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+    text-align: left;
+}
+
 .login-wrapper {
+    /* ... rest of the styles ... */
     min-height: 100vh;
     width: 100%;
     position: relative;

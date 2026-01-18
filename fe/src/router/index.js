@@ -2,13 +2,18 @@ import { createRouter, createWebHistory } from "vue-router"; // cài vue-router:
 
 const routes = [
     {
-        path: '/admin/login',
+        path: '/',
         component: () => import('../components/Admin/Login/index.vue'),
         meta: { layout: 'blank' }
     },
     {
         path: '/admin/register',
         component: () => import('../components/Admin/Register/index.vue'),
+        meta: { layout: 'blank' }
+    },
+    {
+        path: '/admin/forgot',
+        component: () => import('../components/Admin/Forgot/index.vue'),
         meta: { layout: 'blank' }
     },
 ]

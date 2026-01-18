@@ -20,39 +20,45 @@
 
                     <form @submit.prevent="handleRegister" class="login-form">
                         <div class="input-group">
-                            <input type="text" v-model="name" required placeholder=" " id="name">
+                            <input type="text" v-model="name" placeholder=" " id="name" @input="errors.name = ''">
                             <label for="name">Họ và tên</label>
                             <span class="highlight"></span>
+                            <span v-if="errors.name" class="error-message">{{ errors.name }}</span>
                         </div>
 
                         <div class="input-group">
-                            <input type="email" v-model="email" required placeholder=" " id="email">
+                            <input type="email" v-model="email" placeholder=" " id="email" @input="errors.email = ''">
                             <label for="email">Email</label>
                             <span class="highlight"></span>
+                            <span v-if="errors.email" class="error-message">{{ errors.email }}</span>
                         </div>
 
                         <div class="input-group">
-                            <input :type="showPassword ? 'text' : 'password'" v-model="password" required
-                                placeholder=" " id="password">
+                            <input :type="showPassword ? 'text' : 'password'" v-model="password" placeholder=" "
+                                id="password" @input="errors.password = ''">
                             <label for="password">Mật khẩu</label>
                             <span class="eye-icon" @click="showPassword = !showPassword">
                                 {{ showPassword ? 'Ẩn' : 'Hiện' }}
                             </span>
                             <span class="highlight"></span>
+                            <span v-if="errors.password" class="error-message">{{ errors.password }}</span>
                         </div>
 
                         <div class="input-group">
-                            <input :type="showConfirmPassword ? 'text' : 'password'" v-model="confirmPassword" required
-                                placeholder=" " id="confirmPassword">
+                            <input :type="showConfirmPassword ? 'text' : 'password'" v-model="confirmPassword"
+                                placeholder=" " id="confirmPassword" @input="errors.confirmPassword = ''">
                             <label for="confirmPassword">Nhập lại mật khẩu</label>
                             <span class="eye-icon" @click="showConfirmPassword = !showConfirmPassword">
                                 {{ showConfirmPassword ? 'Ẩn' : 'Hiện' }}
                             </span>
                             <span class="highlight"></span>
+                            <span v-if="errors.confirmPassword" class="error-message">{{ errors.confirmPassword
+                            }}</span>
                         </div>
 
                         <div class="actions">
-                            <router-link to="/admin/login" class="forgot-link"><span class="text-secondary">Đã có tài khoản?</span> Đăng nhập
+                            <router-link to="/" class="forgot-link"><span class="text-secondary">Đã có tài khoản?</span>
+                                Đăng nhập
                                 ngay</router-link>
                         </div>
 
@@ -68,7 +74,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -79,12 +85,60 @@ const confirmPassword = ref('');
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 const isLoading = ref(false);
+const errors = reactive({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+});
 
 const handleRegister = async () => {
-    if (password.value !== confirmPassword.value) {
-        alert('Mật khẩu nhập lại không khớp!');
-        return;
+    // Reset errors
+    Object.keys(errors).forEach(key => errors[key] = '');
+    let hasError = false;
+
+    if (!name.value) {
+        errors.name = 'Vui lòng nhập họ và tên!';
+        hasError = true;
     }
+
+    if (!email.value) {
+        errors.email = 'Vui lòng nhập email!';
+        hasError = true;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+        errors.email = 'Vui lòng nhập đúng địa chỉ email!';
+        hasError = true;
+    }
+
+    // Password validation logic
+    if (!password.value) {
+        errors.password = 'Vui lòng nhập mật khẩu!';
+        hasError = true;
+    } else {
+        const passErrors = [];
+        if (password.value.length < 8) {
+            passErrors.push('Mật khẩu phải có ít nhất 8 ký tự!');
+        }
+        const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/;
+        if (!passwordRegex.test(password.value)) {
+            passErrors.push('Mật khẩu phải chứa ít nhất: 1 ký tự đặc biệt, 1 số, 1 chữ cái và 1 chữ viết hoa!');
+        }
+
+        if (passErrors.length > 0) {
+            errors.password = passErrors.join('\n');
+            hasError = true;
+        }
+    }
+
+    if (!confirmPassword.value) {
+        errors.confirmPassword = 'Vui lòng nhập lại mật khẩu!';
+        hasError = true;
+    } else if (password.value !== confirmPassword.value) {
+        errors.confirmPassword = 'Mật khẩu nhập lại không khớp!';
+        hasError = true;
+    }
+
+    if (hasError) return;
 
     isLoading.value = true;
     setTimeout(() => {
@@ -102,7 +156,17 @@ const handleRegister = async () => {
     box-sizing: border-box;
 }
 
+.error-message {
+    color: #ff3333;
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+    text-align: left;
+    white-space: pre-line;
+}
+
 .login-wrapper {
+    /* ... rest of the styles ... */
     min-height: 100vh;
     width: 100%;
     position: relative;
